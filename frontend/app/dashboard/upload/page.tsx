@@ -1,0 +1,202 @@
+"use client";
+
+import { useState } from "react";
+import { Upload } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { predictEyeApi } from "@/lib/predict";
+import jsPDF from "jspdf";
+
+/* ---------------- TYPE ---------------- */
+
+type PredictionResult = {
+  status: "Normal" | "Glaucoma Detected";
+  confidence: number;
+};
+
+export default function UploadPage() {
+  const [file, setFile] = useState<File | null>(null);
+  const [eye, setEye] = useState<"left" | "right" | "">("");
+  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<PredictionResult | null>(null);
+
+  /* ---------------- FILE CHANGE ---------------- */
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    setFile(e.target.files[0]);
+  };
+
+  /* ---------------- ANALYZE ---------------- */
+
+  const handleAnalyze = async () => {
+    if (!file) {
+      toast.error("Please select an image first.");
+      return;
+    }
+
+    if (!eye) {
+      toast.error("Please select left or right eye");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setResult(null);
+
+      const res = await predictEyeApi(file, eye);
+
+      const prediction: PredictionResult = {
+        status:
+          res.data.prediction === "Normal" ? "Normal" : "Glaucoma Detected",
+        confidence: res.data.confidence,
+      };
+
+      setResult(prediction);
+      toast.success("Image analyzed successfully!");
+    } catch (err: any) {
+      toast.error(err.response?.data?.message || "Failed to analyze image");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDownload = () => {
+    if (!result) return;
+
+    const doc = new jsPDF();
+
+    doc.setFontSize(18);
+    doc.text("Glaucoma AI Detection Report", 20, 20);
+
+    doc.setFontSize(12);
+
+    doc.text(`Eye: ${eye.toUpperCase()}`, 20, 50);
+    doc.text(`Status: ${result.status}`, 20, 60);
+    doc.text(`Confidence: ${result.confidence}%`, 20, 70);
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 80);
+
+    doc.save("glaucoma-report.pdf");
+  };
+
+  /* ---------------- UI ---------------- */
+
+  return (
+    <div className="space-y-8 max-w-7xl mx-auto">
+      <h2 className="text-xl sm:text-2xl font-semibold">Upload Image</h2>
+
+      <div className="bg-white rounded-2xl p-6 sm:p-10 border border-gray-100 shadow-sm text-center space-y-6">
+        <div className="flex justify-center">
+          <div className="p-5 bg-teal-50 rounded-xl">
+            <Upload className="text-teal-600" size={28} />
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold">Upload Retinal Fundus Image</h3>
+          <p className="text-sm text-gray-500 mt-1">
+            Only JPG, PNG formats supported. Max size 5MB.
+          </p>
+        </div>
+
+        {/* Eye Selection */}
+        <div className="flex flex-wrap justify-center gap-4">
+          <button
+            onClick={() => setEye("left")}
+            className={`px-4 py-2 rounded-lg border text-sm transition ${
+              eye === "left"
+                ? "bg-teal-600 text-white"
+                : "bg-white text-slate-600"
+            }`}
+          >
+            Left Eye
+          </button>
+
+          <button
+            onClick={() => setEye("right")}
+            className={`px-4 py-2 rounded-lg border text-sm transition ${
+              eye === "right"
+                ? "bg-teal-600 text-white"
+                : "bg-white text-slate-600"
+            }`}
+          >
+            Right Eye
+          </button>
+        </div>
+
+        {/* Hidden Input */}
+        <input
+          type="file"
+          accept="image/png, image/jpeg"
+          onChange={handleFileChange}
+          className="hidden"
+          id="fileInput"
+        />
+
+        <div className="space-y-3">
+          <label htmlFor="fileInput">
+            <Button
+              type="button"
+              className="bg-teal-600 hover:bg-teal-700 text-white"
+              asChild
+            >
+              <span>Select Image</span>
+            </Button>
+          </label>
+
+          {file && (
+            <p className="text-xs text-gray-500 break-all">
+              Selected: {file.name}
+            </p>
+          )}
+
+          {file && (
+            <Button
+              onClick={handleAnalyze}
+              disabled={loading}
+              className="bg-slate-800 hover:bg-slate-900 text-white"
+            >
+              {loading ? "Processing..." : "Analyze Image"}
+            </Button>
+          )}
+        </div>
+      </div>
+
+      {/* Result Section */}
+      {result && (
+        <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm space-y-3">
+          <h3 className="text-sm font-semibold uppercase tracking-wide text-gray-600">
+            Prediction Result
+          </h3>
+
+          <div className="flex justify-between text-sm">
+            <span>Status:</span>
+            <span
+              className={
+                result.status === "Normal"
+                  ? "text-green-600 font-medium"
+                  : "text-red-600 font-medium"
+              }
+            >
+              {result.status}
+            </span>
+          </div>
+
+          <div className="flex justify-between text-sm">
+            <span>Confidence:</span>
+            <span className="font-medium">{result.confidence}%</span>
+          </div>
+
+          <div className="text-xs text-slate-500">Eye: {eye.toUpperCase()}</div>
+
+          <Button
+            onClick={handleDownload}
+            className="mt-3 bg-gray-900 hover:bg-black text-white text-sm"
+          >
+            Download Report
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+}

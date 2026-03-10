@@ -1,0 +1,49 @@
+"use client";
+
+import { Menu } from "lucide-react";
+import { useEffect, useState } from "react";
+import { getProfileApi } from "@/lib/user";
+
+export function Topbar({ setOpen }: any) {
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const data = await getProfileApi();
+        setName(data.name || "");
+      } catch (err) {
+        console.error("Failed to load profile", err);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  const initial = name ? name.charAt(0).toUpperCase() : "U";
+
+  return (
+    <header className="fixed top-0 left-0 lg:left-64 right-0 h-16 bg-white border-b flex items-center justify-between px-4 sm:px-8 z-40">
+      <div className="flex items-center gap-3">
+        {/* Hamburger */}
+        <button className="lg:hidden" onClick={() => setOpen(true)}>
+          <Menu size={22} />
+        </button>
+
+        <h1 className="text-lg sm:text-xl font-semibold">Dashboard</h1>
+      </div>
+
+      <div className="flex items-center gap-4">
+        {/* Name */}
+        <span className="hidden sm:block text-sm text-gray-600">
+          {name || "User"}
+        </span>
+
+        {/* Avatar */}
+        <div className="h-9 w-9 rounded-full bg-teal-600 text-white flex items-center justify-center text-sm">
+          {initial}
+        </div>
+      </div>
+    </header>
+  );
+}

@@ -1,0 +1,398 @@
+
+# 📄 BACKEND_API_CONTRACT.md
+
+---
+
+# GlucoScan AI – Backend API Contract
+
+This document defines all required backend endpoints, request formats, response formats, authentication rules, and security expectations.
+
+Frontend is complete and expects these APIs exactly as defined.
+
+---
+
+# 🔐 1. Authentication APIs
+
+---
+
+## 1.1 Register User
+
+**POST** `/api/auth/register`
+
+### Request Body
+
+```json
+{
+  "name": "string",
+  "email": "string",
+  "password": "string"
+}
+```
+
+### Success Response (200)
+
+```json
+{
+  "message": "OTP sent to email"
+}
+```
+
+### Error Response (400)
+
+```json
+{
+  "error": "Email already exists"
+}
+```
+
+---
+
+## 1.2 Verify Registration OTP
+
+**POST** `/api/auth/verify-otp`
+
+### Request
+
+```json
+{
+  "email": "string",
+  "otp": "123456"
+}
+```
+
+### Success Response
+
+```json
+{
+  "token": "jwt_token",
+  "role": "user"
+}
+```
+
+---
+
+## 1.3 Login
+
+**POST** `/api/auth/login`
+
+### Request
+
+```json
+{
+  "email": "string",
+  "password": "string"
+}
+```
+
+### Success Response
+
+```json
+{
+  "token": "jwt_token",
+  "role": "user | admin"
+}
+```
+
+### Error Response
+
+```json
+{
+  "error": "Invalid credentials"
+}
+```
+
+---
+
+## 1.4 Forgot Password
+
+**POST** `/api/auth/forgot-password`
+
+### Request
+
+```json
+{
+  "email": "string"
+}
+```
+
+### Success Response
+
+```json
+{
+  "message": "Reset OTP sent"
+}
+```
+
+---
+
+## 1.5 Verify Reset OTP
+
+**POST** `/api/auth/verify-reset-otp`
+
+### Request
+
+```json
+{
+  "email": "string",
+  "otp": "123456"
+}
+```
+
+### Success Response
+
+```json
+{
+  "resetToken": "temporary_reset_token"
+}
+```
+
+---
+
+## 1.6 Reset Password
+
+**POST** `/api/auth/reset-password`
+
+### Request
+
+```json
+{
+  "resetToken": "string",
+  "newPassword": "string"
+}
+```
+
+### Success Response
+
+```json
+{
+  "message": "Password reset successful"
+}
+```
+
+---
+
+# 👤 2. User APIs
+
+All endpoints below require:
+
+```
+Authorization: Bearer <jwt_token>
+```
+
+---
+
+## 2.1 Upload Retinal Scan
+
+**POST** `/api/scans/upload`
+
+### Content-Type
+
+`multipart/form-data`
+
+### Form Data
+
+* `file` (JPG / PNG, max 5MB)
+
+### Success Response
+
+```json
+{
+  "scanId": "string",
+  "status": "Normal | Glaucoma Detected",
+  "confidence": 91,
+  "createdAt": "timestamp"
+}
+```
+
+---
+
+## 2.2 Get User Scan History
+
+**GET** `/api/scans`
+
+### Success Response
+
+```json
+[
+  {
+    "id": "string",
+    "status": "Normal",
+    "confidence": 93,
+    "createdAt": "timestamp"
+  }
+]
+```
+
+---
+
+## 2.3 Get Single Scan
+
+**GET** `/api/scans/:id`
+
+---
+
+# 👨‍💼 3. Admin APIs
+
+Admin routes require:
+
+* Valid JWT
+* Role = admin
+
+---
+
+## 3.1 Admin Dashboard Stats
+
+**GET** `/api/admin/stats`
+
+### Response
+
+```json
+{
+  "totalUsers": 128,
+  "activeToday": 34,
+  "totalScans": 240,
+  "detectionRate": 12
+}
+```
+
+---
+
+## 3.2 User Growth Data
+
+**GET** `/api/admin/user-growth`
+
+```json
+[
+  { "month": "Jan", "users": 40 },
+  { "month": "Feb", "users": 65 }
+]
+```
+
+---
+
+## 3.3 Scan Distribution
+
+**GET** `/api/admin/scan-distribution`
+
+```json
+[
+  { "name": "Normal", "value": 210 },
+  { "name": "Detected", "value": 30 },
+  { "name": "Pending", "value": 10 }
+]
+```
+
+---
+
+## 3.4 Get All Users
+
+**GET** `/api/admin/users`
+
+```json
+[
+  {
+    "id": "string",
+    "name": "string",
+    "email": "string",
+    "role": "user",
+    "createdAt": "timestamp",
+    "isActive": true
+  }
+]
+```
+
+---
+
+## 3.5 Enable / Disable User
+
+**PATCH** `/api/admin/users/:id`
+
+```json
+{
+  "isActive": false
+}
+```
+
+---
+
+# 🔐 4. Security Requirements (Mandatory)
+
+Backend must implement:
+
+* JWT Authentication
+* Role-Based Access Control (RBAC)
+* Password hashing (bcrypt)
+* OTP expiry (5–10 minutes)
+* Rate limiting on:
+
+  * Login
+  * OTP verification
+  * Forgot password
+* File validation:
+
+  * Max size 5MB
+  * Only JPG/PNG
+* Proper HTTP status codes
+* Centralized error handling
+
+---
+
+# 📦 5. Database Models (Suggested)
+
+### User
+
+* id
+* name
+* email
+* password (hashed)
+* role (user/admin)
+* isActive
+* createdAt
+
+### Scan
+
+* id
+* userId
+* imagePath
+* status
+* confidence
+* createdAt
+
+### OTP
+
+* email
+* otp
+* type (register/reset)
+* expiresAt
+
+---
+
+# 📌 Final Notes
+
+Frontend expects:
+
+* JSON responses only
+* Errors in format:
+
+```json
+{
+  "error": "Message"
+}
+```
+
+* Proper status codes (200, 400, 401, 403, 500)
+
+---
+
+# ✅ Final Status
+
+Frontend is fully backend-ready.
+Backend can now implement endpoints according to this contract.
+
+---
+
+If you want, I can now:
+
+* Give you database schema SQL
+* Or Express.js starter backend structure
+* Or complete system architecture diagram in text form
