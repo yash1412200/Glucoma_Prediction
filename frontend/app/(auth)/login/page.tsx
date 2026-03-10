@@ -28,22 +28,24 @@ export default function LoginPage() {
     const cleanPassword = String(password).trim();
 
     console.log("SENDING:", cleanEmail, cleanPassword);
-    console.log("EMAIL STATE:", email);
-    console.log("PASSWORD STATE:", password);
+
     try {
       await loginApi(cleanEmail, cleanPassword);
 
       const profile = await api.get("/api/user/profile");
 
-      router.replace(
-        profile.data.role === "admin" ? "/dashboard-admin" : "/dashboard",
-      );
+      console.log("PROFILE:", profile.data);
+
+      if (profile.data.role === "admin") {
+        router.push("/dashboard-admin");
+      } else {
+        router.push("/dashboard");
+      }
     } catch (err: any) {
       console.log("LOGIN ERROR:", err.response?.data);
       alert(err.response?.data?.message || "Login failed");
     }
   };
-
   /* -------------------- UI (UNCHANGED) -------------------- */
 
   return (
