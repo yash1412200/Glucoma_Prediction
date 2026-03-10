@@ -41,11 +41,9 @@ export default function LoginPage() {
       console.log("PROFILE:", profile.data);
 
       if (profile.data.role === "admin") {
-        router.push("/dashboard-admin");
-        router.refresh();
+        window.location.href = "/dashboard-admin";
       } else {
-        router.push("/dashboard");
-        router.refresh();
+        window.location.href = "/dashboard";
       }
     } catch (err: any) {
       console.log("LOGIN ERROR:", err.response?.data);
