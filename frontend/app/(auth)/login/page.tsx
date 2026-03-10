@@ -15,6 +15,7 @@ import { loginApi } from "@/lib/auth";
 
 export default function LoginPage() {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   /* -------------------- FORM STATE -------------------- */
   const [email, setEmail] = useState("");
@@ -23,6 +24,9 @@ export default function LoginPage() {
   /* -------------------- LOGIN HANDLER -------------------- */
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (loading) return;
+    setLoading(true);
 
     const cleanEmail = String(email).trim().toLowerCase();
     const cleanPassword = String(password).trim();
@@ -38,13 +42,17 @@ export default function LoginPage() {
 
       if (profile.data.role === "admin") {
         router.push("/dashboard-admin");
+        router.refresh();
       } else {
         router.push("/dashboard");
+        router.refresh();
       }
     } catch (err: any) {
       console.log("LOGIN ERROR:", err.response?.data);
       alert(err.response?.data?.message || "Login failed");
     }
+
+    setLoading(false);
   };
   /* -------------------- UI (UNCHANGED) -------------------- */
 
