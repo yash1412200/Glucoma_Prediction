@@ -10,30 +10,14 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/dashboard-admin");
 
-  const isAuthPage =
-    pathname.startsWith("/login") ||
-    pathname.startsWith("/register") ||
-    pathname.startsWith("/verify-otp");
-
-  // Not logged in → block dashboard
+  // If not logged in → block dashboard
   if (!token && isDashboard) {
     return NextResponse.redirect(new URL("/login", request.url));
-  }
-
-  // Logged in → block login/register
-  if (token && isAuthPage) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: [
-    "/login",
-    "/register",
-    "/verify-otp",
-    "/dashboard/:path*",
-    "/dashboard-admin/:path*",
-  ],
+  matcher: ["/dashboard/:path*", "/dashboard-admin/:path*"],
 };
