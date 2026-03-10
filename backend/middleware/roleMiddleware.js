@@ -11,6 +11,6 @@ export const roleMiddleware = (role) => {
   };
 };
 
-// 🔐 Role-specific helpers
+//  Role-specific helpers
 export const adminOnly = roleMiddleware("admin");
 export const userOnly = roleMiddleware("user");
