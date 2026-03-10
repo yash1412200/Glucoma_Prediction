@@ -33,7 +33,7 @@ export default function ForgotPasswordPage() {
     try {
       setLoading(true);
 
-      // ✅ BACKEND INTEGRATION
+      // BACKEND INTEGRATION
       await forgotPasswordApi(cleanEmail);
 
       toast.success("OTP sent to your email");

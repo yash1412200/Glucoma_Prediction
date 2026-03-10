@@ -56,7 +56,7 @@ export default function ResetPasswordPage() {
     try {
       setLoading(true);
 
-      // ✅ BACKEND INTEGRATION
+      //  BACKEND INTEGRATION
       await resetPasswordApi(email, otp, password);
 
       toast.success("Password reset successfully");
