@@ -1,16 +1,15 @@
-import api from "@/lib/api";
+import api from "./api";
 
-const saveSettings = async () => {
-  try {
-    await api.put("/api/admin/settings", {
-      uploadLimit,
-      emailNotifications,
-      maintenanceMode,
-      autoLogout,
-    });
-
-    alert("Settings saved");
-  } catch (error) {
-    alert("Failed to save settings");
-  }
+export const updateSettings = async (
+  uploadLimit: number,
+  emailNotifications: boolean,
+  maintenanceMode: boolean,
+  autoLogout: number,
+) => {
+  return api.put("/api/admin/settings", {
+    uploadLimit,
+    emailNotifications,
+    maintenanceMode,
+    autoLogout,
+  });
 };
