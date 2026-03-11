@@ -33,7 +33,7 @@ if not os.path.exists(MODEL_PATH):
         quiet=False
     )
 # Load model
-model = tf.keras.models.load_model(MODEL_PATH)
+model = tf.keras.models.load_model(MODEL_PATH, compile=False)
 
 IMG_SIZE = 224
 
