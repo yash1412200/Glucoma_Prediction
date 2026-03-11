@@ -4,6 +4,8 @@ from PIL import Image
 import numpy as np
 import tensorflow as tf
 import io
+import os
+import gdown
 
 app = FastAPI(title="Glaucoma Prediction API")
 
@@ -21,8 +23,17 @@ app.add_middleware(
 def home():
     return {"message": "Glaucoma Prediction API is running"}
 
+MODEL_PATH = "glaucoma_model.h5"
+
+if not os.path.exists(MODEL_PATH):
+    print("Downloading AI model...")
+    gdown.download(
+        "https://drive.google.com/uc?id=19YseWWXkzjxnSylHtFkFM2VRLvYOoqb-",
+        MODEL_PATH,
+        quiet=False
+    )
 # Load model
-model = tf.keras.models.load_model("glaucoma_model.h5")
+model = tf.keras.models.load_model(MODEL_PATH)
 
 IMG_SIZE = 224
 
