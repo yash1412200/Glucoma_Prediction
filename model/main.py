@@ -1,10 +1,12 @@
+import os
+os.environ["KERAS_BACKEND"] = "tensorflow"
+os.environ["TF_USE_LEGACY_KERAS"] = "1"
+
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 import numpy as np
-import tensorflow as tf
 import io
-import os
 import gdown
 import tensorflow as tf
 from tensorflow.keras.models import load_model
@@ -26,8 +28,7 @@ def home():
     return {"message": "Glaucoma Prediction API is running"}
 
 MODEL_PATH = "glaucoma_model.h5"
-os.environ["TF_KERAS"] = '1'  
-           
+
 if not os.path.exists(MODEL_PATH):
     print("Downloading AI model...")
     gdown.download(
@@ -35,9 +36,10 @@ if not os.path.exists(MODEL_PATH):
         MODEL_PATH,
         quiet=False
     )
-    print("Loading model...")
-# Load model
-model = load_model(MODEL_PATH, compile=False)
+
+print("Loading model...")
+
+model = tf.keras.models.load_model(MODEL_PATH, compile=False)
 
 IMG_SIZE = 224
 
