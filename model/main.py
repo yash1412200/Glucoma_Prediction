@@ -6,6 +6,8 @@ import tensorflow as tf
 import io
 import os
 import gdown
+import tensorflow as tf
+from tensorflow.keras.models import load_model
 
 app = FastAPI(title="Glaucoma Prediction API")
 
@@ -24,7 +26,8 @@ def home():
     return {"message": "Glaucoma Prediction API is running"}
 
 MODEL_PATH = "glaucoma_model.h5"
-
+os.environ["TF_KERAS"] = '1'  
+           
 if not os.path.exists(MODEL_PATH):
     print("Downloading AI model...")
     gdown.download(
@@ -34,7 +37,7 @@ if not os.path.exists(MODEL_PATH):
     )
     print("Loading model...")
 # Load model
-model = tf.keras.models.load_model(MODEL_PATH, compile=False,safe_mode=False)
+model = load_model(MODEL_PATH, compile=False)
 
 IMG_SIZE = 224
 
