@@ -1,7 +1,8 @@
 fastapi==0.103.2
 uvicorn==0.23.2
-tensorflow==2.13.1
-numpy==1.24.3
+tensorflow==2.12.0
+keras==2.12.0
+numpy==1.23.5
 pillow
 python-multipart
 gdown
