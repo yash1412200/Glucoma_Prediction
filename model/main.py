@@ -1,7 +1,4 @@
 import os
-os.environ["KERAS_BACKEND"] = "tensorflow"
-os.environ["TF_USE_LEGACY_KERAS"] = "1"
-
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
@@ -9,7 +6,7 @@ import numpy as np
 import io
 import gdown
 import tensorflow as tf
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 
 app = FastAPI(title="Glaucoma Prediction API")
 
