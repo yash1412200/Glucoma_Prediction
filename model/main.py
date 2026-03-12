@@ -9,7 +9,7 @@ import numpy as np
 import io
 import gdown
 import tensorflow as tf
-from tensorflow.keras.models import load_model
+from keras.models import load_model
 
 app = FastAPI(title="Glaucoma Prediction API")
 
@@ -39,7 +39,7 @@ if not os.path.exists(MODEL_PATH):
 
 print("Loading model...")
 
-model = tf.keras.models.load_model(MODEL_PATH, compile=False)
+model = load_model(MODEL_PATH, compile=False)
 
 IMG_SIZE = 224
 
