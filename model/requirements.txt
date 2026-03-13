@@ -1,8 +1,8 @@
 fastapi
 uvicorn
-tensorflow==2.13.0
-keras==2.13.1
-numpy==1.24.3
-pillow
+tensorflow==2.19.0
+numpy==1.26.4
+scikit-learn==1.6.1
+pillow==11.3.0
 python-multipart
 gdown
