@@ -7,12 +7,24 @@ dotenv.config();
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 587,
-  secure: false, // use TLS
+  secure: false, // TLS
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
-  connectionTimeout: 10000,
+  tls: {
+    rejectUnauthorized: false,
+  },
+  connectionTimeout: 30000,
+  greetingTimeout: 30000,
+});
+
+transporter.verify((error, success) => {
+  if (error) {
+    console.log("SMTP connection error:", error);
+  } else {
+    console.log("SMTP server ready to send emails");
+  }
 });
 
 export const sendOtpEmail = async (to, otp) => {
