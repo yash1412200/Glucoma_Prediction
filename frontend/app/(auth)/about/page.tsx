@@ -1,7 +1,6 @@
 "use client";
 
 import { Navbar } from "@/components/marketing/Navbar";
-import { Button } from "@/components/ui/button";
 
 export default function AboutPage() {
   return (
@@ -9,56 +8,82 @@ export default function AboutPage() {
       <Navbar />
 
       <section className="pt-24 md:pt-28 px-4 sm:px-6 min-h-screen bg-gradient-to-br from-gray-50 to-teal-50">
-        <div className="max-w-5xl mx-auto w-full grid md:grid-cols-2 gap-10 items-start">
-          {/* CONTENT */}
-          <div>
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-              AI-Powered{" "}
-              <span className="text-teal-600">Glaucoma Detection</span>
-            </h1>
+        <div className="max-w-4xl mx-auto">
+          {/* PAGE TITLE */}
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
+            About <span className="text-teal-600">GlaucomaDetect</span>
+          </h1>
 
-            <p className="mt-6 text-gray-600 text-lg">
-              GlaucomaDetect aims to democratize access to early glaucoma
-              detection using AI. We believe advanced eye care should be
-              accessible to everyone, regardless of location or cost.
-            </p>
+          {/* MAIN CARD */}
+          <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-8 md:p-10 space-y-8">
+            {/* MISSION */}
+            <div>
+              <h2 className="text-xl font-semibold text-teal-600 mb-3">
+                Our Mission
+              </h2>
+              <p className="text-gray-700 leading-relaxed">
+                GlaucomaDetect aims to democratize access to early glaucoma
+                detection by leveraging artificial intelligence and deep
+                learning. We believe that advanced eye care should be accessible
+                to everyone, regardless of geographical location or economic
+                status.
+              </p>
+            </div>
 
-            <p className="mt-4 text-gray-600">
-              Built on <span className="font-semibold">InceptionV3</span> and
-              trained with ACRIMA dataset, our system analyzes retinal fundus
-              images and detects early optic nerve damage instantly.
-            </p>
+            {/* HOW IT WORKS */}
+            <div>
+              <h2 className="text-xl font-semibold text-teal-600 mb-3">
+                How It Works
+              </h2>
+              <p className="text-gray-700 leading-relaxed">
+                Our system uses the{" "}
+                <span className="font-semibold">InceptionV3</span> deep learning
+                architecture, trained on the public ACRIMA dataset, to analyze
+                retinal fundus images. The model detects subtle signs of
+                glaucoma-related optic nerve damage with high accuracy,
+                providing instant screening results.
+              </p>
+            </div>
 
             {/* FEATURES */}
-            <div className="mt-6 grid grid-cols-2 gap-3 text-sm text-gray-700">
-              <p>✓ Web-Based Access</p>
-              <p>✓ AI-Powered</p>
-              <p>✓ Secure</p>
-              <p>✓ Instant Results</p>
-              <p>✓ History Tracking</p>
+            <div>
+              <h2 className="text-xl font-semibold text-teal-600 mb-4">
+                Key Features
+              </h2>
+
+              <div className="space-y-3 text-gray-700">
+                <p>
+                  ✓ <span className="font-medium">Web-Based Access:</span> No
+                  installation required, works on any device with a browser
+                </p>
+                <p>
+                  ✓ <span className="font-medium">AI-Powered:</span> Advanced
+                  deep learning model for accurate detection
+                </p>
+                <p>
+                  ✓ <span className="font-medium">Secure:</span>{" "}
+                  Healthcare-grade encryption and privacy protection
+                </p>
+                <p>
+                  ✓ <span className="font-medium">Instant Results:</span> Get
+                  analysis in seconds, not days
+                </p>
+                <p>
+                  ✓ <span className="font-medium">History Tracking:</span>{" "}
+                  Maintain records of all screenings
+                </p>
+              </div>
             </div>
 
-            {/* BUTTON */}
-            <div className="mt-8">
-              <Button className="bg-teal-600 hover:bg-teal-700 text-white">
-                Try Now
-              </Button>
+            {/* LEGAL NOTICE */}
+            <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-4">
+              <p className="text-sm text-gray-700">
+                ⚖️ <span className="font-semibold">Legal Notice:</span> This
+                system is intended for preliminary screening purposes only and
+                should not be used as a substitute for professional medical
+                diagnosis. Always consult with a qualified ophthalmologist.
+              </p>
             </div>
-
-            {/* LEGAL */}
-            <p className="mt-6 text-xs text-gray-500">
-              ⚖️ This system is for preliminary screening only and not a
-              substitute for professional medical diagnosis.
-            </p>
-          </div>
-
-          {/* IMAGE CARD */}
-          <div className="bg-white/70 backdrop-blur-md rounded-2xl shadow-lg p-8 flex items-center justify-center">
-            <img
-              src="/eye1.png"
-              alt="AI Eye"
-              className="max-h-[300px] object-contain"
-            />
           </div>
         </div>
       </section>
