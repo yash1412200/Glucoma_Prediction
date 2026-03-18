@@ -13,7 +13,11 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center gap-2">
-          <Eye className="h-6 w-6 text-teal-600" />
+          <img
+            src="/transparent.png"
+            alt="GlucoScan Logo"
+            className="h-6 w-6 object-contain"
+          />
           <span className="text-lg font-semibold">GlucoScan</span>
         </div>
 
