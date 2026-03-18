@@ -11,18 +11,18 @@ export function Navbar() {
   return (
     <nav className="fixed top-0 left-0 w-full z-50 border-b bg-white/80 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-        {/* Logo */}
+        {/* LEFT - Logo */}
         <div className="flex items-center gap-2">
           <img
-            src="/eye1.png" // ✅ correct path
+            src="/eye1.png"
             alt="GlucoScan Logo"
-            className="h-8 w-8 object-contain"
+            className="h-12 w-12 object-contain"
           />
           <span className="text-lg font-semibold">GlucoScan</span>
         </div>
 
-        {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-6">
+        {/* CENTER - Menu */}
+        <div className="hidden md:flex items-center gap-8 absolute left-1/2 transform -translate-x-1/2">
           <Link
             href="/"
             className="text-sm font-medium text-gray-600 hover:text-black transition"
@@ -36,7 +36,10 @@ export function Navbar() {
           >
             About
           </Link>
+        </div>
 
+        {/* RIGHT - Auth Buttons */}
+        <div className="hidden md:flex items-center gap-4">
           <Link
             href="/login"
             className="text-sm font-medium text-gray-600 hover:text-black transition"
