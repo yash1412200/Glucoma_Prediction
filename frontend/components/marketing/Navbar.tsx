@@ -16,7 +16,7 @@ export function Navbar() {
           <img
             src="/eye1.png"
             alt="GlucoScan Logo"
-            className="h-12 w-12 object-contain"
+            className="h-14 w-14 object-contain"
           />
           <span className="text-lg font-semibold">GlucoScan</span>
         </div>
