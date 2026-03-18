@@ -14,7 +14,7 @@ export function Navbar() {
         {/* Logo */}
         <div className="flex items-center gap-2">
           <img
-            src="/transparent.jpg" // ✅ correct path
+            src="/eye1.jpg" // ✅ correct path
             alt="GlucoScan Logo"
             className="h-8 w-8 object-contain"
           />
