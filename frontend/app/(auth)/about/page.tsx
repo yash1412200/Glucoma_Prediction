@@ -1,7 +1,8 @@
 "use client";
 
+import { Navbar } from "@/components/marketing/Navbar";
 import { Button } from "@/components/ui/button";
-import Navbar from "@/components/marketing/Navbar.tsx";
+
 export default function AboutPage() {
   return (
     <>
