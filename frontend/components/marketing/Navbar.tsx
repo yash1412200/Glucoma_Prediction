@@ -14,7 +14,7 @@ export function Navbar() {
         {/* Logo */}
         <div className="flex items-center gap-2">
           <img
-            src="/transparent.png"
+            src="../../public/transparent.png"
             alt="GlucoScan Logo"
             className="h-6 w-6 object-contain"
           />
