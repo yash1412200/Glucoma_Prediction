@@ -63,7 +63,7 @@ export function Hero() {
           className="rounded-2xl overflow-hidden shadow-xl bg-white flex items-center justify-center p-4"
         >
           <img
-            src="/eye1.jpg"
+            src="/eye1.png"
             alt="Glaucoma AI"
             className="w-full max-w-md lg:max-w-lg object-contain"
           />
