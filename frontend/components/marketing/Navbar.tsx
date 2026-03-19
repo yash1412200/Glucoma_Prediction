@@ -1,12 +1,28 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import api from "@/lib/api";
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // 🔥 Check login using cookie
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        await api.get("/api/user/profile"); // cookie sent automatically
+        setIsLoggedIn(true);
+      } catch {
+        setIsLoggedIn(false);
+      }
+    };
+
+    checkAuth();
+  }, []);
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 border-b bg-white/80 backdrop-blur-md">
@@ -37,18 +53,28 @@ export function Navbar() {
 
         {/* RIGHT - Auth Buttons */}
         <div className="hidden md:flex items-center gap-4">
-          <Link
-            href="/login"
-            className="text-sm text-gray-600 hover:text-black"
-          >
-            Log in
-          </Link>
+          {isLoggedIn ? (
+            <Link href="/dashboard">
+              <Button className="bg-teal-600 hover:bg-teal-700 text-white">
+                Dashboard
+              </Button>
+            </Link>
+          ) : (
+            <>
+              <Link
+                href="/login"
+                className="text-sm text-gray-600 hover:text-black"
+              >
+                Log in
+              </Link>
 
-          <Link href="/register">
-            <Button className="bg-teal-600 hover:bg-teal-700 text-white">
-              Get Started
-            </Button>
-          </Link>
+              <Link href="/register">
+                <Button className="bg-teal-600 hover:bg-teal-700 text-white">
+                  Get Started
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile Hamburger */}
@@ -73,17 +99,27 @@ export function Navbar() {
               </Button>
             </Link>
 
-            <Link href="/login" onClick={() => setMenuOpen(false)}>
-              <Button variant="outline" className="w-full">
-                Log in
-              </Button>
-            </Link>
+            {isLoggedIn ? (
+              <Link href="/dashboard" onClick={() => setMenuOpen(false)}>
+                <Button className="w-full bg-teal-600 text-white">
+                  Dashboard
+                </Button>
+              </Link>
+            ) : (
+              <>
+                <Link href="/login" onClick={() => setMenuOpen(false)}>
+                  <Button variant="outline" className="w-full">
+                    Log in
+                  </Button>
+                </Link>
 
-            <Link href="/register" onClick={() => setMenuOpen(false)}>
-              <Button className="w-full bg-teal-600 text-white">
-                Get Started
-              </Button>
-            </Link>
+                <Link href="/register" onClick={() => setMenuOpen(false)}>
+                  <Button className="w-full bg-teal-600 text-white">
+                    Get Started
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}
