@@ -14,7 +14,7 @@ export function Navbar() {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        await api.get("/api/user/profile"); // cookie sent automatically
+        await api.get("/api/user/profile");
         setIsLoggedIn(true);
       } catch {
         setIsLoggedIn(false);
@@ -23,6 +23,18 @@ export function Navbar() {
 
     checkAuth();
   }, []);
+
+  // 🔥 Logout handler
+  const handleLogout = async () => {
+    try {
+      await api.post("/api/auth/logout");
+    } catch (err) {
+      console.log("Logout error");
+    }
+
+    // refresh UI
+    window.location.reload();
+  };
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 border-b bg-white/80 backdrop-blur-md">
@@ -49,16 +61,42 @@ export function Navbar() {
           >
             About
           </Link>
+
+          {isLoggedIn && (
+            <>
+              <Link
+                href="/dashboard"
+                className="text-sm text-gray-600 hover:text-black"
+              >
+                Dashboard
+              </Link>
+
+              <Link
+                href="/dashboard/upload"
+                className="text-sm text-gray-600 hover:text-black"
+              >
+                Upload
+              </Link>
+
+              <Link
+                href="/dashboard/profile"
+                className="text-sm text-gray-600 hover:text-black"
+              >
+                Profile
+              </Link>
+            </>
+          )}
         </div>
 
-        {/* RIGHT - Auth Buttons */}
+        {/* RIGHT - Auth */}
         <div className="hidden md:flex items-center gap-4">
           {isLoggedIn ? (
-            <Link href="/dashboard">
-              <Button className="bg-teal-600 hover:bg-teal-700 text-white">
-                Dashboard
-              </Button>
-            </Link>
+            <button
+              onClick={handleLogout}
+              className="text-sm font-medium text-red-500 hover:text-red-600"
+            >
+              Logout
+            </button>
           ) : (
             <>
               <Link
@@ -77,7 +115,7 @@ export function Navbar() {
           )}
         </div>
 
-        {/* Mobile Hamburger */}
+        {/* MOBILE MENU BUTTON */}
         <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
           {menuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
@@ -99,12 +137,42 @@ export function Navbar() {
               </Button>
             </Link>
 
+            {isLoggedIn && (
+              <>
+                <Link href="/dashboard" onClick={() => setMenuOpen(false)}>
+                  <Button variant="ghost" className="w-full justify-start">
+                    Dashboard
+                  </Button>
+                </Link>
+
+                <Link
+                  href="/dashboard/upload"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <Button variant="ghost" className="w-full justify-start">
+                    Upload
+                  </Button>
+                </Link>
+
+                <Link
+                  href="/dashboard/profile"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <Button variant="ghost" className="w-full justify-start">
+                    Profile
+                  </Button>
+                </Link>
+              </>
+            )}
+
             {isLoggedIn ? (
-              <Link href="/dashboard" onClick={() => setMenuOpen(false)}>
-                <Button className="w-full bg-teal-600 text-white">
-                  Dashboard
-                </Button>
-              </Link>
+              <Button
+                onClick={handleLogout}
+                className="w-full text-red-500"
+                variant="outline"
+              >
+                Logout
+              </Button>
             ) : (
               <>
                 <Link href="/login" onClick={() => setMenuOpen(false)}>
