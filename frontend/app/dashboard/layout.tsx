@@ -12,11 +12,6 @@ export default function DashboardLayout({ children }: any) {
     <>
       {/* Same Navbar everywhere */}
       <UserNavbar />
-      <Hero />
-      <HowItWorks />
-      <Features />
-      <CTA />
-      <Footer />
 
       {/* Main Content */}
       <main className="pt-24 min-h-screen bg-gradient-to-br from-gray-50 to-teal-50">
