@@ -9,6 +9,7 @@ import api from "@/lib/api";
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true); // 🔥 NEW
 
   // 🔥 Check login using cookie
   useEffect(() => {
@@ -18,6 +19,8 @@ export function Navbar() {
         setIsLoggedIn(true);
       } catch {
         setIsLoggedIn(false);
+      } finally {
+        setLoading(false); // ✅ IMPORTANT
       }
     };
 
@@ -32,9 +35,13 @@ export function Navbar() {
       console.log("Logout error");
     }
 
-    // refresh UI
     window.location.reload();
   };
+
+  // 🔥 Prevent flicker
+  if (loading) {
+    return <div className="h-16"></div>; // placeholder navbar height
+  }
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 border-b bg-white/80 backdrop-blur-md">
