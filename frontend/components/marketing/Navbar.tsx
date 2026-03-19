@@ -13,27 +13,19 @@ export function Navbar() {
 
   // 🔥 Check login using cookie
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        await api.get("/api/user/profile");
-        setIsLoggedIn(true);
-      } catch {
-        setIsLoggedIn(false);
-      } finally {
-        setLoading(false); // ✅ IMPORTANT
-      }
-    };
-
-    checkAuth();
+    const status = sessionStorage.getItem("isLoggedIn");
+    setIsLoggedIn(status === "true");
+    setLoading(false);
   }, []);
 
   // 🔥 Logout handler
   const handleLogout = async () => {
     try {
       await api.post("/api/auth/logout");
-    } catch (err) {
-      console.log("Logout error");
-    }
+    } catch {}
+
+    // 🔥 remove session state
+    sessionStorage.removeItem("isLoggedIn");
 
     window.location.reload();
   };

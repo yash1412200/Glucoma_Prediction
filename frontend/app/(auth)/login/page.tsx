@@ -36,6 +36,8 @@ export default function LoginPage() {
     try {
       await loginApi(cleanEmail, cleanPassword);
 
+      sessionStorage.setItem("isLoggedIn", "true");
+
       const profile = await api.get("/api/user/profile");
 
       console.log("PROFILE:", profile.data);
