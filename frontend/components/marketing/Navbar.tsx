@@ -24,12 +24,12 @@ export function Navbar() {
       await api.post("/api/auth/logout");
     } catch {}
 
-    // 🔥 remove session state
+    // remove session state
     sessionStorage.removeItem("isLoggedIn");
 
-    window.location.reload();
+    // 🔥 redirect to home
+    window.location.href = "/";
   };
-
   // 🔥 Prevent flicker
   if (loading) {
     return <div className="h-16"></div>; // placeholder navbar height
