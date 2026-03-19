@@ -9,7 +9,7 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   // 🔥 TEMP auth state (replace later with real auth)
-  const isLoggedIn = true;
+  const isLoggedIn = false;
 
   return (
     <nav className="fixed top-0 left-0 w-full z-50 border-b bg-white/80 backdrop-blur-md">
