@@ -84,6 +84,19 @@ export default function AboutPage() {
                 diagnosis. Always consult with a qualified ophthalmologist.
               </p>
             </div>
+
+            {/* ACKNOWLEDGMENT */}
+            <div className="bg-gray-50 border border-gray-200 rounded-xl p-5">
+              <h2 className="text-lg font-semibold text-teal-600 mb-2">
+                Acknowledgment
+              </h2>
+              <p className="text-gray-700 text-sm leading-relaxed">
+                We gratefully acknowledge the Research & Development Cell of
+                Rashtrasant Tukadoji Maharaj Nagpur University for providing
+                financial support for this project under the University Research
+                Project Scheme.
+              </p>
+            </div>
           </div>
         </div>
       </section>
