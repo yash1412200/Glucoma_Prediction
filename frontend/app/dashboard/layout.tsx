@@ -6,12 +6,13 @@ import { Features } from "@/components/marketing/Features";
 import { Footer } from "@/components/marketing/Footer";
 import { Hero } from "@/components/marketing/Hero";
 import { HowItWorks } from "@/components/marketing/HowItWorks";
+import { Navbar } from "@/components/marketing/Navbar";
 
 export default function DashboardLayout({ children }: any) {
   return (
     <>
       {/* Same Navbar everywhere */}
-      <UserNavbar />
+      <Navbar />
 
       {/* Main Content */}
       <main className="pt-24 min-h-screen bg-gradient-to-br from-gray-50 to-teal-50">
