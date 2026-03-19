@@ -142,11 +142,13 @@ export const login = async (req, res) => {
         httpOnly: true,
         secure: true,
         sameSite: "none",
+        path: "/",
       })
       .cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: true,
         sameSite: "none",
+        path: "/",
       })
       .json({
         message: "Login successful",
