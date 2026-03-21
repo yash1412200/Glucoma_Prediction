@@ -33,21 +33,26 @@ export default function ProfilePage() {
   }, []);
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto">
-      <h2 className="text-xl sm:text-2xl font-semibold">Profile</h2>
+    <div className="space-y-8 max-w-[900px] mx-auto px-4 sm:px-6">
+      {/* TITLE */}
+      <h2 className="text-2xl sm:text-3xl font-semibold text-slate-800">
+        Profile
+      </h2>
 
-      <div className="bg-white rounded-2xl p-6 sm:p-8 border border-gray-100 shadow-sm space-y-6">
+      {/* CARD */}
+      <div className="bg-white/80 backdrop-blur-md rounded-2xl p-6 sm:p-8 border shadow-md space-y-6">
         {loading && <p className="text-sm text-gray-500">Loading profile...</p>}
 
         {!loading && (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {/* FORM (VERTICAL) */}
+            <div className="flex flex-col gap-6">
               {/* Name */}
               <div>
                 <label className="text-sm text-gray-500">Full Name</label>
 
                 <input
-                  className="mt-1 w-full border rounded-lg p-3 text-sm"
+                  className="mt-1 w-full border rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                   value={profile.name}
                   readOnly
                 />
@@ -58,13 +63,14 @@ export default function ProfilePage() {
                 <label className="text-sm text-gray-500">Email</label>
 
                 <input
-                  className="mt-1 w-full border rounded-lg p-3 text-sm"
+                  className="mt-1 w-full border rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
                   value={profile.email}
                   readOnly
                 />
               </div>
             </div>
 
+            {/* BUTTON */}
             <Button className="bg-teal-600 hover:bg-teal-700 text-white w-full sm:w-auto">
               Save Changes
             </Button>
