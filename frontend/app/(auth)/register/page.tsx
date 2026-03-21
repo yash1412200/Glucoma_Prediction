@@ -45,9 +45,7 @@ export default function RegisterPage() {
       <Card className="bg-white/70 backdrop-blur-xl border border-white/40 shadow-2xl rounded-2xl">
         <CardContent className="p-8 space-y-6">
           <div className="flex flex-col items-center space-y-3">
-            <div className="p-3 bg-teal-100 rounded-full">
-              <Eye className="h-6 w-6 text-teal-600" />
-            </div>
+            <img src="/eye1.png" className="h-12 w-14" alt="" />
             <h2 className="text-2xl font-bold">Create Account</h2>
             <p className="text-sm text-gray-500 text-center">
               Join GlucoScan AI diagnostics
