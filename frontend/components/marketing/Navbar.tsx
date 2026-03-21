@@ -9,16 +9,16 @@ import api from "@/lib/api";
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(true); // 🔥 NEW
+  const [loading, setLoading] = useState(true); //  NEW
 
-  // 🔥 Check login using cookie
+  //  Check login using cookie
   useEffect(() => {
     const status = sessionStorage.getItem("isLoggedIn");
     setIsLoggedIn(status === "true");
     setLoading(false);
   }, []);
 
-  // 🔥 Logout handler
+  //  Logout handler
   const handleLogout = async () => {
     try {
       await api.post("/api/auth/logout");
@@ -27,10 +27,10 @@ export function Navbar() {
     // remove session state
     sessionStorage.removeItem("isLoggedIn");
 
-    // 🔥 redirect to home
+    //  redirect to home
     window.location.href = "/";
   };
-  // 🔥 Prevent flicker
+  //  Prevent flicker
   if (loading) {
     return <div className="h-16"></div>; // placeholder navbar height
   }
@@ -75,6 +75,13 @@ export function Navbar() {
                 className="text-sm text-gray-600 hover:text-black"
               >
                 Upload
+              </Link>
+
+              <Link
+                href="/dashboard/reports"
+                className="text-sm text-gray-600 hover:text-black"
+              >
+                Reports
               </Link>
 
               <Link
