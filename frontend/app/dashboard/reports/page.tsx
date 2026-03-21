@@ -26,36 +26,84 @@ export default function ReportsPage() {
     fetchReports();
   }, []);
 
-  const handleDownload = (report: any) => {
+  const handleDownload = async (report: any) => {
     const doc = new jsPDF();
 
+    // 🔥 Convert image URL to base64
+    const toBase64 = (url: string) =>
+      fetch(url)
+        .then((res) => res.blob())
+        .then(
+          (blob) =>
+            new Promise<string>((resolve) => {
+              const reader = new FileReader();
+              reader.onloadend = () => resolve(reader.result as string);
+              reader.readAsDataURL(blob);
+            }),
+        );
+
+    const imageBase64 = await toBase64(report.image);
+
+    /* ---------------- HEADER ---------------- */
     doc.setFontSize(18);
     doc.text("Glaucoma AI Detection Report", 20, 20);
 
+    /* ---------------- IMAGE ---------------- */
+    doc.setFontSize(12);
+    doc.text("Uploaded Retinal Image", 20, 35);
+
+    doc.addImage(imageBase64, "JPEG", 20, 40, 160, 90);
+
+    /* ---------------- DETAILS ---------------- */
     doc.setFontSize(12);
 
     doc.text(
       `Eye: ${report.eye === "left" ? "Left Eye" : "Right Eye"}`,
       20,
-      50,
+      140,
     );
 
     doc.text(
-      `Prediction: ${
+      `Status: ${
         report.prediction === "Normal" ? "Normal" : "Glaucoma Detected"
       }`,
       20,
-      60,
+      150,
     );
 
-    doc.text(`Confidence: ${(report.confidence * 100).toFixed(1)}%`, 20, 70);
+    doc.text(`Confidence: ${(report.confidence * 100).toFixed(1)}%`, 20, 160);
 
     doc.text(
       `Date: ${new Date(report.createdAt).toLocaleDateString()}`,
       20,
-      80,
+      170,
     );
 
+    /* ---------------- INTERPRETATION ---------------- */
+    doc.setFontSize(14);
+    doc.text("Assessment", 20, 190);
+
+    doc.setFontSize(11);
+
+    const message =
+      report.prediction === "Normal"
+        ? "No signs of glaucoma detected. Continue regular eye check-ups."
+        : "Signs of glaucoma detected. Please consult an ophthalmologist for further evaluation.";
+
+    doc.text(message, 20, 200, { maxWidth: 160 });
+
+    /* ---------------- DISCLAIMER ---------------- */
+    doc.setTextColor(200, 120, 0);
+    doc.setFontSize(10);
+
+    doc.text(
+      "⚠ This is an AI-based screening tool. Results should be confirmed by a medical professional.",
+      20,
+      230,
+      { maxWidth: 160 },
+    );
+
+    /* ---------------- SAVE ---------------- */
     doc.save(`glaucoma-report-${report._id}.pdf`);
   };
 
