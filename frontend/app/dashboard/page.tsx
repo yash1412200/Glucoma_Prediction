@@ -40,14 +40,19 @@ export default function DashboardHome() {
   }, []);
 
   if (loading) {
-    return <p className="text-slate-500">Loading dashboard...</p>;
+    return <p className="text-slate-500 px-4">Loading dashboard...</p>;
   }
 
   return (
-    <div className="space-y-8 sm:space-y-10 ">
+    <div
+      className="space-y-8 sm:space-y-10 
+                    min-h-screen 
+                    bg-gradient-to-br from-gray-50 to-teal-50 
+                    px-4 sm:px-6 py-6"
+    >
       {/* Title */}
       <div>
-        <h2 className="text-xl sm:text-2xl font-semibold text-slate-800">
+        <h2 className="text-2xl sm:text-3xl font-semibold text-slate-800">
           Overview
         </h2>
         <p className="text-sm text-slate-500 mt-1">
@@ -87,8 +92,8 @@ export default function DashboardHome() {
       {/* Upload CTA */}
       <div
         onClick={() => router.push("/dashboard/upload")}
-        className="group bg-white rounded-2xl border p-6 sm:p-8 cursor-pointer
-                   hover:shadow-xl hover:-translate-y-1 hover:border-teal-200
+        className="group bg-white/80 backdrop-blur-md rounded-2xl border p-6 sm:p-8 cursor-pointer
+                   shadow-md hover:shadow-xl hover:-translate-y-1 hover:border-teal-200
                    transition-all duration-300"
       >
         <div className="flex justify-between items-center gap-4">
@@ -106,7 +111,7 @@ export default function DashboardHome() {
       </div>
 
       {/* Recent Activity */}
-      <div className="bg-white rounded-2xl border p-5 sm:p-6 shadow-sm">
+      <div className="bg-white/80 backdrop-blur-md rounded-2xl border p-5 sm:p-6 shadow-md">
         <h3 className="text-base sm:text-lg font-semibold mb-4">
           Recent Activity
         </h3>
@@ -118,7 +123,7 @@ export default function DashboardHome() {
             {recent.slice(0, 3).map((scan, idx) => (
               <li
                 key={scan._id}
-                className="flex justify-between px-3 py-2 rounded-lg hover:bg-slate-50"
+                className="flex justify-between px-3 py-2 rounded-lg hover:bg-slate-50 transition"
               >
                 <span>Scan #{idx + 1}</span>
 
@@ -158,7 +163,7 @@ function StatCard({
   valueColor?: string;
 }) {
   return (
-    <div className="bg-white rounded-2xl p-5 sm:p-6 border hover:shadow-xl transition">
+    <div className="bg-white/80 backdrop-blur-md rounded-2xl p-5 sm:p-6 border shadow-md hover:shadow-xl transition-all duration-300">
       <div className="flex justify-between items-center">
         <div>
           <p className="text-sm text-slate-500">{title}</p>
