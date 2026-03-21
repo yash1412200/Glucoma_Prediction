@@ -7,29 +7,24 @@ export default function AuthLayout({
 }) {
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
-      {/* LEFT SIDE — Image + Branding */}
-      <div className="hidden lg:flex relative items-center justify-center text-white p-20 overflow-hidden">
-        {/* Background Image */}
+      {/* LEFT SIDE — Image + Text (CLEAN) */}
+      <div className="hidden lg:flex flex-col items-center justify-center bg-gradient-to-br from-teal-600 to-cyan-600 text-white p-20 text-center">
+        {/* IMAGE */}
         <img
-          src="/eye1.png" //  put image in /public
+          src="/eye1.png"
           alt="Glaucoma Detection"
-          className="absolute inset-0 w-full h-full object-cover"
+          className="w-64 mb-8 object-contain"
         />
 
-        {/* Overlay Gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-teal-700/80 to-cyan-700/80" />
+        {/* TEXT */}
+        <h1 className="text-4xl font-bold leading-tight mb-4">
+          AI-Powered <br /> Glaucoma Detection
+        </h1>
 
-        {/* Content */}
-        <div className="relative max-w-lg space-y-6 z-10">
-          <h1 className="text-5xl font-bold leading-tight">
-            AI-Powered <br /> Glaucoma Detection
-          </h1>
-
-          <p className="text-teal-100 text-lg leading-relaxed">
-            Early detection saves sight. Upload retinal images and receive
-            instant AI diagnostics.
-          </p>
-        </div>
+        <p className="text-teal-100 text-lg max-w-md leading-relaxed">
+          Early detection saves sight. Upload retinal images and receive instant
+          AI diagnostics.
+        </p>
       </div>
 
       {/* RIGHT SIDE — Form */}
