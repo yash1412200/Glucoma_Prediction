@@ -49,12 +49,12 @@ export default function LoginPage() {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5 }}
-      className="w-full max-w-xl" // 🔥 CHANGED HERE
+      className="w-full max-w-xl" //  CHANGED HERE
     >
       <Card className="bg-white/80 backdrop-blur-xl border border-white/40 shadow-2xl rounded-2xl">
         <CardContent className="p-10 space-y-6">
           {" "}
-          {/* 🔥 more padding */}
+          {/*  more padding */}
           {/* HEADER */}
           <div className="flex flex-col items-center space-y-4">
             <img src="/eye1.png" className="h-12 w-14" alt="" />
