@@ -8,7 +8,7 @@ export default function AboutPage() {
       <Navbar />
 
       <section className="pt-24 md:pt-28 px-4 sm:px-6 min-h-screen bg-gradient-to-br from-gray-50 to-teal-50">
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-8">
             About <span className="text-teal-600">GlaucomaDetect</span>
           </h1>
