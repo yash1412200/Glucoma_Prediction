@@ -29,31 +29,52 @@ export default function ReportsPage() {
   const handleDownload = async (report: any) => {
     const doc = new jsPDF();
 
-    // 🔥 Convert image URL to base64
-    const toBase64 = (url: string) =>
-      fetch(url)
-        .then((res) => res.blob())
-        .then(
-          (blob) =>
-            new Promise<string>((resolve) => {
-              const reader = new FileReader();
-              reader.onloadend = () => resolve(reader.result as string);
-              reader.readAsDataURL(blob);
-            }),
-        );
+    const toBase64 = async (url: string) => {
+      const res = await fetch(url);
+      const blob = await res.blob();
 
-    const imageUrl = report.imagePath;
+      return new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.readAsDataURL(blob);
+      });
+    };
+
     const imageBase64 = await toBase64(report.imagePath);
 
     /* ---------------- HEADER ---------------- */
     doc.setFontSize(18);
     doc.text("Glaucoma AI Detection Report", 20, 20);
 
-    /* ---------------- IMAGE ---------------- */
+    /* ---------------- IMAGES ---------------- */
     doc.setFontSize(12);
-    doc.text("Uploaded Retinal Image", 20, 35);
+    doc.text("Retinal Images", 20, 35);
 
-    doc.addImage(imageBase64, "JPEG", 20, 40, 160, 90);
+    // Original Image
+    doc.text("Original", 20, 45);
+    doc.addImage(imageBase64, "JPEG", 20, 50, 75, 60);
+
+    // Analyzed Image (same for now)
+    doc.text("Analyzed", 115, 45);
+    doc.addImage(imageBase64, "JPEG", 115, 50, 75, 60);
+
+    /* ---------------- DIAGNOSTIC BOX ---------------- */
+    doc.setDrawColor(200);
+    doc.rect(20, 120, 170, 30);
+
+    doc.setFontSize(13);
+    doc.text("Diagnostic Assessment", 25, 130);
+
+    doc.setFontSize(11);
+
+    const statusText =
+      report.prediction === "Normal"
+        ? "No signs of glaucoma detected"
+        : "Signs of glaucoma detected";
+
+    doc.text(statusText, 25, 140);
+
+    doc.text(`${(report.confidence * 100).toFixed(1)}% Confidence`, 25, 147);
 
     /* ---------------- DETAILS ---------------- */
     doc.setFontSize(12);
@@ -61,37 +82,28 @@ export default function ReportsPage() {
     doc.text(
       `Eye: ${report.eye === "left" ? "Left Eye" : "Right Eye"}`,
       20,
-      140,
+      165,
     );
-
-    doc.text(
-      `Status: ${
-        report.prediction === "Normal" ? "Normal" : "Glaucoma Detected"
-      }`,
-      20,
-      150,
-    );
-
-    doc.text(`Confidence: ${(report.confidence * 100).toFixed(1)}%`, 20, 160);
 
     doc.text(
       `Date: ${new Date(report.createdAt).toLocaleDateString()}`,
       20,
-      170,
+      175,
     );
 
-    /* ---------------- INTERPRETATION ---------------- */
+    /* ---------------- RECOMMENDATIONS ---------------- */
     doc.setFontSize(14);
-    doc.text("Assessment", 20, 190);
+    doc.text("Recommendations", 20, 195);
 
     doc.setFontSize(11);
 
-    const message =
-      report.prediction === "Normal"
-        ? "No signs of glaucoma detected. Continue regular eye check-ups."
-        : "Signs of glaucoma detected. Please consult an ophthalmologist for further evaluation.";
-
-    doc.text(message, 20, 200, { maxWidth: 160 });
+    if (report.prediction === "Normal") {
+      doc.text("✔ Maintain regular eye check-ups.", 20, 205);
+      doc.text("✔ No immediate action needed.", 20, 212);
+    } else {
+      doc.text("⚠ Consult an ophthalmologist immediately.", 20, 205);
+      doc.text("⚠ Further clinical evaluation recommended.", 20, 212);
+    }
 
     /* ---------------- DISCLAIMER ---------------- */
     doc.setTextColor(200, 120, 0);

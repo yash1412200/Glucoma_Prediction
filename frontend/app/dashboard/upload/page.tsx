@@ -61,21 +61,86 @@ export default function UploadPage() {
     }
   };
 
-  const handleDownload = () => {
-    if (!result) return;
+  const handleDownload = async () => {
+    if (!result || !file) return;
 
     const doc = new jsPDF();
 
+    // Convert uploaded file to base64
+    const toBase64 = (file: File) =>
+      new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result as string);
+        reader.readAsDataURL(file);
+      });
+
+    const imageBase64 = await toBase64(file);
+
+    /* ---------------- HEADER ---------------- */
     doc.setFontSize(18);
     doc.text("Glaucoma AI Detection Report", 20, 20);
 
+    /* ---------------- IMAGES ---------------- */
+    doc.setFontSize(12);
+    doc.text("Retinal Images", 20, 35);
+
+    // Original
+    doc.text("Original", 20, 45);
+    doc.addImage(imageBase64, "JPEG", 20, 50, 75, 60);
+
+    // Analyzed (same for now)
+    doc.text("Analyzed", 115, 45);
+    doc.addImage(imageBase64, "JPEG", 115, 50, 75, 60);
+
+    /* ---------------- DIAGNOSTIC BOX ---------------- */
+    doc.setDrawColor(200);
+    doc.rect(20, 120, 170, 30);
+
+    doc.setFontSize(13);
+    doc.text("Diagnostic Assessment", 25, 130);
+
+    doc.setFontSize(11);
+
+    const statusText =
+      result.status === "Normal"
+        ? "No signs of glaucoma detected"
+        : "Signs of glaucoma detected";
+
+    doc.text(statusText, 25, 140);
+    doc.text(`${result.confidence}% Confidence`, 25, 147);
+
+    /* ---------------- DETAILS ---------------- */
     doc.setFontSize(12);
 
-    doc.text(`Eye: ${eye.toUpperCase()}`, 20, 50);
-    doc.text(`Status: ${result.status}`, 20, 60);
-    doc.text(`Confidence: ${result.confidence}%`, 20, 70);
-    doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 80);
+    doc.text(`Eye: ${eye.toUpperCase()}`, 20, 165);
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, 20, 175);
 
+    /* ---------------- RECOMMENDATIONS ---------------- */
+    doc.setFontSize(14);
+    doc.text("Recommendations", 20, 195);
+
+    doc.setFontSize(11);
+
+    if (result.status === "Normal") {
+      doc.text("✔ Maintain regular eye check-ups.", 20, 205);
+      doc.text("✔ No immediate action needed.", 20, 212);
+    } else {
+      doc.text("⚠ Consult an ophthalmologist immediately.", 20, 205);
+      doc.text("⚠ Further clinical evaluation recommended.", 20, 212);
+    }
+
+    /* ---------------- DISCLAIMER ---------------- */
+    doc.setTextColor(200, 120, 0);
+    doc.setFontSize(10);
+
+    doc.text(
+      "⚠ This is an AI-based screening tool. Results should be confirmed by a medical professional.",
+      20,
+      230,
+      { maxWidth: 160 },
+    );
+
+    /* ---------------- SAVE ---------------- */
     doc.save("glaucoma-report.pdf");
   };
 
