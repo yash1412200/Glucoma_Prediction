@@ -56,7 +56,7 @@ export const predictEye = async (req, res) => {
 
     const savedPrediction = await Prediction.create({
       userId: req.user.id,
-      imagePath: req.file.filename,
+      imagePath: req.file.path,
       eye,
       prediction: aiResponse.data.prediction,
       confidence: aiResponse.data.confidence,
