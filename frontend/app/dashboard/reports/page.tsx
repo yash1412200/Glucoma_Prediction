@@ -42,7 +42,8 @@ export default function ReportsPage() {
             }),
         );
 
-    const imageBase64 = await toBase64(report.image);
+    const imageUrl = `https://glucoma-prediction.onrender.com/${report.imagePath}`;
+    const imageBase64 = await toBase64(imageUrl);
 
     /* ---------------- HEADER ---------------- */
     doc.setFontSize(18);
