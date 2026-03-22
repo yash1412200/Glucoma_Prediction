@@ -41,8 +41,16 @@ export const predictEye = async (req, res) => {
        SEND IMAGE TO AI MODEL
     =============================== */
 
+    const imageResponse = await axios.get(req.file.path, {
+      responseType: "arraybuffer",
+    });
+
     const formData = new FormData();
-    formData.append("file", fs.createReadStream(req.file.path));
+
+    formData.append("file", imageResponse.data, {
+      filename: "image.jpg",
+      contentType: "image/jpeg",
+    });
 
     const aiResponse = await axios.post(
       `${process.env.AI_BASE_URL}/predict`,
