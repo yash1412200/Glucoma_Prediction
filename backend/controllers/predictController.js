@@ -32,8 +32,6 @@ export const predictEye = async (req, res) => {
     const fileSizeMB = req.file.size / (1024 * 1024);
 
     if (settings && fileSizeMB > settings.uploadLimit) {
-      fs.unlinkSync(req.file.path);
-
       return res.status(400).json({
         message: `File exceeds ${settings.uploadLimit}MB limit`,
       });
@@ -58,7 +56,7 @@ export const predictEye = async (req, res) => {
 
     const savedPrediction = await Prediction.create({
       userId: req.user.id,
-      imagePath: req.file.path,
+      imagePath: req.file.filename,
       eye,
       prediction: aiResponse.data.prediction,
       confidence: aiResponse.data.confidence,
@@ -78,8 +76,6 @@ export const predictEye = async (req, res) => {
         "AI detected possible glaucoma in your retinal scan.",
       );
     }
-
-    fs.unlinkSync(req.file.path);
 
     res.json({
       message: "Prediction successful",

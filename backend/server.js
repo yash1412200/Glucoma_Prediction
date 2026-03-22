@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import helmet from "helmet";
 import cors from "cors";
 import morgan from "morgan";
+import path from "path";
 
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
@@ -40,7 +41,7 @@ app.use(
 app.use(morgan("dev"));
 
 /* ROUTES */
-
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 app.use("/api/auth", authRoutes);
 
 app.use(maintenanceCheck);

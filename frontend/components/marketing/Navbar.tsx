@@ -161,6 +161,15 @@ export function Navbar() {
                 </Link>
 
                 <Link
+                  href="/dashboard/reports"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <Button variant="ghost" className="w-full justify-start">
+                    Reports
+                  </Button>
+                </Link>
+
+                <Link
                   href="/dashboard/profile"
                   onClick={() => setMenuOpen(false)}
                 >
