@@ -45,7 +45,7 @@ export function Navbar() {
             alt="GlucoScan Logo"
             className="h-14 w-14 object-contain"
           />
-          <span className="text-lg font-semibold">GlucoScan</span>
+          <span className="text-lg font-semibold">GlaucoScan</span>
         </div>
 
         {/* CENTER - Menu */}
