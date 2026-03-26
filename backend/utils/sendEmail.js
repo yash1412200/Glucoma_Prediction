@@ -5,7 +5,7 @@ dotenv.config();
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const FROM_EMAIL = "onboarding@resend.dev";
+const FROM_EMAIL = "noreply@glucoscan.in";
 
 export const sendOtpEmail = async (to, otp) => {
   try {
