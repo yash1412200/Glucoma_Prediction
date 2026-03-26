@@ -6,12 +6,12 @@ dotenv.config();
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const FROM_EMAIL = "onboarding@resend.dev";
-
+console.log("Sending OTP to:", to);
 export const sendOtpEmail = async (to, otp) => {
   try {
     await resend.emails.send({
       from: `Glaucoma AI <${FROM_EMAIL}>`,
-      to: to,
+      to: [to],
       subject: "Your OTP Verification Code",
       html: `
         <div style="font-family: Arial; padding:20px">
@@ -21,7 +21,7 @@ export const sendOtpEmail = async (to, otp) => {
         </div>
       `,
     });
-
+    console.log("Sending OTP to:", to);
     console.log("✅ OTP sent via Resend");
   } catch (error) {
     console.error("❌ Resend error:", error);
