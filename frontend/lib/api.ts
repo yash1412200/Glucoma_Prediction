@@ -1,8 +1,9 @@
 import axios from "axios";
+console.log("API URL:", process.env.NEXT_PUBLIC_API_URL);
 
 const api = axios.create({
-  baseURL: "https://glucoma-prediction.onrender.com",
-  withCredentials: true, // REQUIRED for cookies
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  withCredentials: true,
 });
 
 export default api;
