@@ -6,7 +6,7 @@ dotenv.config();
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const FROM_EMAIL = "onboarding@resend.dev";
-console.log("Sending OTP to:", to);
+
 export const sendOtpEmail = async (to, otp) => {
   try {
     await resend.emails.send({
