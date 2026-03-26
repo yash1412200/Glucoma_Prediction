@@ -23,16 +23,9 @@ const PORT = process.env.PORT || 5000;
 /* CORS */
 app.use(
   cors({
-    origin: ["https://www.glucoscan.in", "https://glucoscan.in"],
+    origin: process.env.CLIENT_URL,
     credentials: true,
-  }),
-);
-
-app.options(
-  "*",
-  cors({
-    origin: ["https://www.glucoscan.in", "https://glucoscan.in"],
-    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   }),
 );
 
