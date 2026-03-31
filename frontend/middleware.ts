@@ -2,7 +2,14 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-  // TEMPORARY: disable middleware
+  const token = request.cookies.get("token")?.value;
+
+  // If no token → redirect to login
+  if (!token) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  // If token exists → allow access
   return NextResponse.next();
 }
 
